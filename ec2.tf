@@ -79,7 +79,10 @@ resource "aws_instance" "web1" {
        volume_size           = "10"
        delete_on_termination = "true"
     }
-
+    network_interface {
+    network_interface_id = aws_network_interface.web1.id
+    device_index         = 0
+    }
     tags = {
         Name = "WebServer"
         Terraform = true
@@ -102,11 +105,8 @@ data "template_file" "web1" {
 
 resource "aws_network_interface" "web1" {
   subnet_id       = aws_subnet.us-east-1a-public.id
-  private_ips     = ["10.0.0.11"]
-  security_groups = [aws_security_group.websg.id]
-
-  attachment {
-    instance     = aws_instance.web1.id
-    device_index = 0
+  private_ips     = ["10.0.0.11"]   
+  tags = {
+    Name = "primary_network_interface"
   }
 }
