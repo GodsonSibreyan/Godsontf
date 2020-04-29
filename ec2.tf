@@ -86,6 +86,8 @@ resource "aws_instance" "web1" {
     }
     provisioner "local-exec" {
          command = "echo ${aws_instance.web1.public_ip} >> /var/lib/jenkins/workspace/Django/publicip"
+    }
+     provisioner "local-exec" {
          command = "echo ${aws_instance.web1.private_ip} >> /var/lib/jenkins/workspace/Django/privateip"
     }
 }
