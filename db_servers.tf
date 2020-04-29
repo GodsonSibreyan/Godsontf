@@ -82,6 +82,10 @@ resource "aws_instance" "db1" {
         Name = "DB Server"
         Terraform = true
     }
+    network_interface {
+    network_interface_id = aws_network_interface.db1.id
+    device_index         = 0
+    }
     provisioner "local-exec" {
          command = "echo ${aws_instance.db1.private_ip} >> /var/lib/jenkins/workspace/Django/Multiprivateip"
     }
@@ -141,11 +145,8 @@ resource "aws_route_table_association" "us-east-1b-private" {
 
 resource "aws_network_interface" "db1" {
   subnet_id       = aws_subnet.us-east-1b-private.id
-  private_ips     = ["10.0.1.144"]
-  security_groups = [aws_security_group.dbsg.id]
-
-  attachment {
-    instance     = aws_instance.db1.id
-    device_index = 0
+  private_ips     = ["10.0.1.144"]   
+  tags = {
+    Name = "private_network_interface"
   }
 }
