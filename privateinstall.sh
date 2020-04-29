@@ -13,10 +13,6 @@ sudo yum install ufw -y
 sudo yum -y install mariadb-server -y
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
-sudo mysql -e "CREATE DATABASE zippyops"
-sudo mysql -e "CREATE USER zippyops@10.0.0.11 IDENTIFIED BY 'zippyops';"
-sudo mysql -e "GRANT ALL PRIVILEGES ON zippyops.* TO 'zippyops'@'10.0.0.11';"
-sudo mysql -e "FLUSH PRIVILEGES;"
 
 sudo yum groupinstall 'Development Tools' -y
 sudo wget http://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
