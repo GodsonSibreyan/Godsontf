@@ -22,5 +22,6 @@ pip install mysqlclient
 echo yes | ufw enable
 ufw allow 3306
 ufw allow 22
+
 sudo systemctl start mysqld
 sudo systemctl enable mysqld
