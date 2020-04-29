@@ -74,14 +74,17 @@ resource "aws_instance" "web1" {
     subnet_id = aws_subnet.us-east-1a-public.id
     associate_public_ip_address = true
     source_dest_check = false
+    network_interface {
+    network_interface_id = aws_network_interface.web1.id
+    device_index         = 0
+    }
+    credit_specification {
+    cpu_credits = "unlimited"
+    }
     root_block_device {
        volume_type           = "gp2"
        volume_size           = "10"
        delete_on_termination = "true"
-    }
-    network_interface {
-    network_interface_id = aws_network_interface.web1.id
-    device_index         = 0
     }
     tags = {
         Name = "WebServer"
@@ -102,11 +105,10 @@ data "template_file" "web1" {
 #    instance = aws_instance.web1.id
 #    vpc = true
 #}
-
 resource "aws_network_interface" "web1" {
   subnet_id       = aws_subnet.us-east-1a-public.id
-  private_ips     = ["10.0.0.11"]   
-  tags = {
-    Name = "primary_network_interface"
-  }
+  private_ips     = ["10.0.0.11"]
+  security_groups = [aws_security_group.websg.id]
 }
+
+
