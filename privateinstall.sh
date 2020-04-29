@@ -6,9 +6,7 @@ then
 fi
 sleep 5
 sudo amazon-linux-extras install epel -y
-sudo yum install epel-release -y
 sudo yum install git -y
-sudo yum update -y
 sudo yum install ufw -y
 sudo yum -y install mariadb-server -y
 sudo systemctl start mariadb
