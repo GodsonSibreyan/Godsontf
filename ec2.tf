@@ -100,13 +100,13 @@ data "template_file" "web1" {
 #    vpc = true
 #}
 
-#resource "aws_network_interface" "web1" {
-#  subnet_id       = aws_subnet.us-east-1a-public.id
-#  private_ips     = ["10.0.0.11"]
-#  security_groups = [aws_security_group.websg.id]
+resource "aws_network_interface" "web1" {
+  subnet_id       = aws_subnet.us-east-1a-public.id
+  private_ips     = ["10.0.0.11"]
+  security_groups = [aws_security_group.websg.id]
 
-#  attachment {
-#    instance     = aws_instance.web1.id
-#    device_index = 1
-#  }
-#}
+  attachment {
+    instance     = aws_instance.web1.id
+    device_index = 1
+  }
+}
