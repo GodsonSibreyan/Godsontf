@@ -107,6 +107,6 @@ resource "aws_network_interface" "web1" {
 
   attachment {
     instance     = aws_instance.web1.id
-    device_index = 1
+    device_index = 0
   }
 }
