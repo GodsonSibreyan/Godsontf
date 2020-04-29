@@ -13,6 +13,7 @@ sudo yum install ufw -y
 sudo yum -y install mariadb-server -y
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
+sudo mysql -e "CREATE DATABASE zippyops"
 
 sudo yum groupinstall 'Development Tools' -y
 sudo wget http://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
