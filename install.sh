@@ -20,6 +20,7 @@ pip install mysqlclient
 echo y | ufw enable
 ufw allow 3306
 ufw allow 22
+ufw allow 8000
 sudo systemctl start mysqld
 sudo systemctl enable mysqld
 sudo sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
