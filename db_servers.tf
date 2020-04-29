@@ -146,6 +146,6 @@ resource "aws_network_interface" "db1" {
 
   attachment {
     instance     = aws_instance.db1.id
-    device_index = 1
+    device_index = 0
   }
 }
