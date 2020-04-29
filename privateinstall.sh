@@ -22,6 +22,10 @@ pip install mysqlclient
 echo yes | ufw enable
 ufw allow 3306
 ufw allow 22
-
 sudo systemctl start mysqld
 sudo systemctl enable mysqld
+mysql_upgrade --protocol=tcp -P 3306
+mysql -uroot -e "CREATE USER zippyops@10.0.0.11 IDENTIFIED BY 'zippyops';"
+mysql -uroot -e "GRANT ALL PRIVILEGES ON zippyops.* TO 'zippyops'@'10.0.0.11';"
+mysql -uroot -e "FLUSH PRIVILEGES;"
+sudo systemctl restart mysqld
