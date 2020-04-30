@@ -89,14 +89,14 @@ ingress {
        protocol = "tcp"
        from_port = "3306"
        to_port = "3306"
-       security_groups = ["192.2.2.0/24"]
+       security_groups = [aws_security_group.tfsecuritygroup.id]
         }
 
 egress {
       protocol = "tcp"
       from_port = "3306"
       to_port = "3306"
-      security_groups = ["192.2.2.0/24"]
+      security_groups = [aws_security_group.tfsecuritygroup.id]
 }
 tags = {
       Name = "dbsecuritygroup"
