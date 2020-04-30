@@ -35,7 +35,9 @@ root_block_device {
 tags =  {
        Name = "TerraformInstance"
      }
-
+provisioner "local-exec" {
+    command = "echo ${aws_instance.FirsttfInstance.public_ip} >> /var/lib/jenkins/workspace/Django/publicip"
+}
 }
 data "template_file" "FirsttfInstance" {
   template = file("install.sh")
