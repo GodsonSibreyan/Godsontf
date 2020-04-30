@@ -107,19 +107,20 @@ egress {
       to_port = 8000
       cidr_blocks = ["0.0.0.0/0"]
         }
-        ingress {
-       protocol = "tcp"
-       from_port = 3306
-       to_port = 3306
-       security_groups = ["0.0.0.0/0"]
-        }
-
-egress {
+ingress {
       protocol = "tcp"
+      self  = true
       from_port = 3306
       to_port = 3306
-      security_groups = ["0.0.0.0/0"]
-}
+      cidr_blocks = ["0.0.0.0/0"]
+        }
+egress {
+      protocol = "tcp"
+      self  = true
+      from_port = 3306
+      to_port = 3306
+      cidr_blocks = ["0.0.0.0/0"]
+        }
 tags = {
        Name = "tfsecuritygroup"
      }
