@@ -109,15 +109,15 @@ egress {
         }
         ingress {
        protocol = "tcp"
-       from_port = "3306"
-       to_port = "3306"
+       from_port = 3306
+       to_port = 3306
        security_groups = ["0.0.0.0/0"]
         }
 
 egress {
       protocol = "tcp"
-      from_port = "3306"
-      to_port = "3306"
+      from_port = 3306
+      to_port = 3306
       security_groups = ["0.0.0.0/0"]
 }
 tags = {
