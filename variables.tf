@@ -1,8 +1,8 @@
 variable "active_key" {
-    default = "AKIAJGLBGQ7ZX7ZMXWDQ"
+    default = "user"
 }
 variable "security_key" {
-    default = "wtj40oz+ZeY+ghLEOxVC+R+gBodZ0NB2KcQOwfDx"
+    default = "password"
 }
 variable "aws_region" {
     default = "us-east-1"
