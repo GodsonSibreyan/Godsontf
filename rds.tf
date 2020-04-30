@@ -10,11 +10,14 @@ password = "zippyops"
 availability_zone = "us-east-1a"
 backup_retention_period = "7"
 backup_window = "00:05-00:35"
-
+skip_final_snapshot = true
 
 db_subnet_group_name = aws_db_subnet_group.tfdbsubnetgroup.id
 vpc_security_group_ids = [aws_security_group.dbsg.id]
 
+  provisioner "local-exec" {
+    command = "echo ${aws_db_instance.tfrds.address} >> /var/lib/jenkins/workspace/Django/endpoint"
+}
 }
 
 output "rds_link" {
