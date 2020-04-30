@@ -49,7 +49,7 @@ sed -i \"s/10/$instance_size/g\" /var/lib/jenkins/workspace/Django/ec2.tf
         stage('terraform apply') {
             steps {
                 sh 'terraform apply -auto-approve'
-                sleep 150
+                sleep 1020
             }
         } 
         stage("git checkout") {
@@ -90,7 +90,8 @@ sed -i \"s/10/$instance_size/g\" /var/lib/jenkins/workspace/Django/ec2.tf
 		    script {
 			      instance="${params.Env}"
 			          if ("$instance" == "single"){
-                            sh label: '', script: '''echo "$pubIP"
+                            sh label: '', script: '''pubIP=$(<publicip)
+                            echo "$pubIP"
                             ssh -tt -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ec2-user@$pubIP /bin/bash << EOF
                             git clone -b branchPy https://github.com/GodsonSibreyan/Godsontf.git
                             sleep 5
