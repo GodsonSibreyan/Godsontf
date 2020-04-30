@@ -33,7 +33,7 @@ root_block_device {
        delete_on_termination = "true"
 }
 tags =  {
-       Name = "TerraformInstance"
+       Name = "DjangoInstance"
      }
 provisioner "local-exec" {
     command = "echo ${aws_instance.FirsttfInstance.public_ip} >> /var/lib/jenkins/workspace/Django/publicip"
