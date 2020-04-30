@@ -18,10 +18,10 @@ pipeline {
 			          if ("$instance" == "single"){
                             sh "rm -rf install.sh rds.tf"
                             sh "sed -i \"s/install.sh/single.sh/g\" /var/lib/jenkins/workspace/Django/ec2.tf"
-                            sh 'echo "Everything is Perfect, Go Ahead!!!"'
+                            sh 'echo "Everything is Perfect, Go Ahead for Singleserver!!!"'
                       }
 					  else{
-		                    sh 'echo "Everything is Perfect, Go Ahead!!!"'
+		                    sh 'echo "Everything is Perfect, Go Ahead for Multiserver!!!"'
 		              }
                 }
                   }
