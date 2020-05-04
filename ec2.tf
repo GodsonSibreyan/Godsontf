@@ -85,10 +85,10 @@ resource "aws_instance" "web1" {
         Terraform = true
     }
     provisioner "local-exec" {
-         command = "echo ${aws_instance.web1.public_ip} >> /var/lib/jenkins/workspace/Django/publicip"
+         command = "echo ${aws_instance.web1.public_ip} >> /var/lib/jenkins/workspace/Multi-Django/publicip"
     }
      provisioner "local-exec" {
-         command = "echo ${aws_instance.web1.private_ip} >> /var/lib/jenkins/workspace/Django/privateip"
+         command = "echo ${aws_instance.web1.private_ip} >> /var/lib/jenkins/workspace/Multi-Django/privateip"
     }
 }
 data "template_file" "web1" {
