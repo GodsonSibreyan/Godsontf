@@ -7,7 +7,12 @@ variable "security_key" {
 variable "aws_region" {
     default = "us-east-1"
 }
-
+variable "privateec2_ip" {
+    default = "10.0.1.11"
+}
+variable "publicec2_ip" {
+    default = "10.0.0.11"
+}
 variable "vpc_cidr" {
     default = "10.0.0.0/16"
 }
