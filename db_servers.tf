@@ -76,6 +76,7 @@ resource "aws_instance" "db1" {
     user_data = data.template_file.db1.rendered
     vpc_security_group_ids = [aws_security_group.dbsg.id]
     subnet_id = aws_subnet.us-east-1b-private.id
+    private_ip = var.privateec2_ip
     source_dest_check = false
 
     tags = {
