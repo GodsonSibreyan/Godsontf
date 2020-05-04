@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('terraform clone') {
             steps {
-                
+                checkout([$class: 'GitSCM', branches: [[name: '*/S.tf/M.tf']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '7e261af1-1211-4b5a-9478-675cac127cce', url: 'https://github.com/GodsonSibreyan/Godsontf.git']]])
             }
         }
         stage('Success Message'){
@@ -17,7 +17,7 @@ pipeline {
 			      instance="${params.Env}"
 			          if ("$instance" == "single"){
                             sh "rm -rf install.sh privateinstall.sh db_server.tf"
-                            sh "sed -i \"s/install.sh/single.sh/g\" /var/lib/jenkins/workspace/Django/ec2.tf"
+                            sh "sed -i \"s/install.sh/single.sh/g\" /var/lib/jenkins/workspace/Multi-Multi-Django/ec2.tf"
                             sh 'echo "Everything is Perfect, Go Ahead for Singleserver!!!"'
                       }
 					  else{
@@ -28,10 +28,10 @@ pipeline {
             }
         stage('Parameters'){
             steps {
-                sh label: '', script: ''' sed -i \"s/user/$access_key/g\" /var/lib/jenkins/workspace/Django/variables.tf
-sed -i \"s/password/$secret_key/g\" /var/lib/jenkins/workspace/Django/variables.tf
-sed -i \"s/t2.micro/$instance_type/g\" /var/lib/jenkins/workspace/Django/variables.tf
-sed -i \"s/10/$instance_size/g\" /var/lib/jenkins/workspace/Django/ec2.tf
+                sh label: '', script: ''' sed -i \"s/user/$access_key/g\" /var/lib/jenkins/workspace/Multi-Django/variables.tf
+sed -i \"s/password/$secret_key/g\" /var/lib/jenkins/workspace/Multi-Django/variables.tf
+sed -i \"s/t2.micro/$instance_type/g\" /var/lib/jenkins/workspace/Multi-Django/variables.tf
+sed -i \"s/10/$instance_size/g\" /var/lib/jenkins/workspace/Multi-Django/ec2.tf
 '''
                   }
             }
@@ -54,7 +54,7 @@ sed -i \"s/10/$instance_size/g\" /var/lib/jenkins/workspace/Django/ec2.tf
         } 
         stage("git checkout") {
 	     steps {
-		    checkout([$class: 'GitSCM', branches: [[name: '*/branchPy']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'djangocodebase']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '7e261af1-1211-4b5a-9478-675cac127cce', url: 'https://github.com/GodsonSibreyan/Godsontf.git']]])
+		    checkout([$class: 'GitSCM', branches: [[name: '*/branchPy']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'Multi-Djangocodebase']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '7e261af1-1211-4b5a-9478-675cac127cce', url: 'https://github.com/GodsonSibreyan/Godsontf.git']]])
            }
         }
 		
@@ -63,7 +63,7 @@ sed -i \"s/10/$instance_size/g\" /var/lib/jenkins/workspace/Django/ec2.tf
 	       script {
            scannerHome = tool 'sonarqube';
            withSonarQubeEnv('sonarqube') {
-		   sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=zippyops:django -Dsonar.projectName=django -Dsonar.projectVersion=1.0 -Dsonar.projectBaseDir=${WORKSPACE}/djangocodebase -Dsonar.sources=${WORKSPACE}/djangocodebase"
+		   sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=zippyops:Multi-Django -Dsonar.projectName=Multi-Django -Dsonar.projectVersion=1.0 -Dsonar.projectBaseDir=${WORKSPACE}/Multi-Djangocodebase -Dsonar.sources=${WORKSPACE}/Multi-Djangocodebase"
             }
 	      }
 		}
@@ -121,7 +121,7 @@ sed -i \"s/10/$instance_size/g\" /var/lib/jenkins/workspace/Django/ec2.tf
 						   sudo /bin/su - root
 						   sleep 5
 						   cd /home/ec2-user/Godsontf
-                           sed -i \"s/localhost/$MpriIP/g\" /home/ec2-user/Godsontf/python_webapp_django/settings.py
+                           sed -i \"s/localhost/$MpriIP/g\" /home/ec2-user/Godsontf/python_webapp_Django/settings.py
                            mysql --defaults-extra-file=mysql -h $MpriIP --database zippyops < zippyops.sql
 						   chmod 755 manage.py
                            python manage.py migrate
@@ -156,7 +156,7 @@ sed -i \"s/10/$instance_size/g\" /var/lib/jenkins/workspace/Django/ec2.tf
                    mkdir -p $WORKSPACE/out
                    chmod 777 $WORKSPACE/out
                    rm -f $WORKSPACE/out/*.*
-                   sudo docker run --rm --network=host -v ${WORKSPACE}/out:/zap/wrk/:rw -t docker.io/owasp/zap2docker-stable zap-baseline.py -t http://$pubIP:8000 -m 15 -d -r Django_Dev_ZAP_VULNERABILITY_REPORT_${BUILD_ID}.html -x Django_Dev_ZAP_VULNERABILITY_REPORT_${BUILD_ID}.xml || true
+                   sudo docker run --rm --network=host -v ${WORKSPACE}/out:/zap/wrk/:rw -t docker.io/owasp/zap2docker-stable zap-baseline.py -t http://$pubIP:8000 -m 15 -d -r Multi-Django_Dev_ZAP_VULNERABILITY_REPORT_${BUILD_ID}.html -x Multi-Django_Dev_ZAP_VULNERABILITY_REPORT_${BUILD_ID}.xml || true
                    '''
                    archiveArtifacts artifacts: 'out/**/*'
 		    }
@@ -213,7 +213,7 @@ sed -i \"s/10/$instance_size/g\" /var/lib/jenkins/workspace/Django/ec2.tf
               alwaysLinkToLastBuild: true,
               keepAll: true,
               reportDir: '/var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_ID}/archive/out',
-              reportFiles: 'Django_Dev_ZAP_VULNERABILITY_REPORT_${BUILD_ID}.html',
+              reportFiles: 'Multi-Django_Dev_ZAP_VULNERABILITY_REPORT_${BUILD_ID}.html',
               reportName: 'Dev_owasp'
               ]
             }
