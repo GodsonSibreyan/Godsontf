@@ -75,13 +75,6 @@ resource "aws_instance" "web1" {
     private_ip = var.publicec2_ip
     associate_public_ip_address = true
     source_dest_check = false
-    network_interface {
-    network_interface_id = aws_network_interface.web1.id
-    device_index         = 0
-    }
-    credit_specification {
-    cpu_credits = "unlimited"
-    }
     root_block_device {
        volume_type           = "gp2"
        volume_size           = "10"
