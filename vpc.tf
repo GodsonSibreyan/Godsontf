@@ -8,9 +8,9 @@ module "vpc" {
   #public_subnets = var.vpc_public_subnets
   #private_subnets = var.vpc_private_subnets
   #database_subnets = var.vpc_database_subnets
-  public_subnets = ["10.0.1.0/24"]
-  private_subnets = ["10.0.11.0/24"]
-  database_subnets = ["10.0.21.0/24"]
+  public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
+  private_subnets = ["10.0.11.0/24", "10.0.12.0/24"]
+  database_subnets = ["10.0.21.0/24", "10.0.22.0/24"]
     
   enable_nat_gateway = var.vpc_enable_nat_gateway
   single_nat_gateway = var.vpc_single_nat_gateway
