@@ -41,7 +41,7 @@ module "rds" {
 
   subnet_ids = module.vpc.database_subnets
 
-  family = "mysql"
+  family = "default.mysql5.7"
 
   tags = {
     Group = var.name
