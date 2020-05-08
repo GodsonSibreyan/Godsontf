@@ -5,7 +5,8 @@ module "vpc" {
   azs = var.vpc_azs
   cidr = var.vpc_cidr
 
-  public_subnets = var.vpc_public_subnets
+  #public_subnets = var.vpc_public_subnets
+  public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
   private_subnets = var.vpc_private_subnets
   database_subnets = var.vpc_database_subnets
 
@@ -24,10 +25,10 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
-variable "vpc_public_subnets" {
-  description = "A list of public subnets inside the VPC"
-  default     = [10.0.1.0/24, 10.0.2.0/24]
-}
+#variable "vpc_public_subnets" {
+#  description = "A list of public subnets inside the VPC"
+#  default     = [10.0.1.0/24, 10.0.2.0/24]
+#}
 
 variable "vpc_private_subnets" {
   description = "A list of private subnets inside the VPC"
