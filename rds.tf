@@ -38,10 +38,9 @@ module "rds" {
 
   # disable backups to create DB faster
   backup_retention_period = var.db_backup_retention_period
-
+  create_db_parameter_group = false
+  parameter_group_name = "default.mysql5.7"
   subnet_ids = module.vpc.database_subnets
-
-  family = "default.mysql5.7"
 
   tags = {
     Group = var.name
