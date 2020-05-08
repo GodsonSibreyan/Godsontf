@@ -7,7 +7,7 @@ resource "aws_security_group" "rds" {
     from_port   = var.db_port
     to_port     = var.db_port
     protocol    = "tcp"
-    cidr_blocks = [module.vpc.private_subnets_cidr_blocks]
+    cidr_blocks = module.vpc.private_subnets_cidr_blocks
   }
 
   tags = {
@@ -39,7 +39,7 @@ module "rds" {
   # disable backups to create DB faster
   backup_retention_period = var.db_backup_retention_period
 
-  subnet_ids = [module.vpc.database_subnets]
+  subnet_ids = module.vpc.database_subnets
 
   family = "mysql"
 
