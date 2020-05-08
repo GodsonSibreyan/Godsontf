@@ -41,12 +41,11 @@ module "elb_web" {
   ]
 
   health_check = {
+      target              = "HTTP:8000/"
       interval            = 20
       healthy_threshold   = 2
       unhealthy_threshold = 2
       timeout             = 5
-      path                = "/"
-      port                = 8000
     }
 
   tags = {
