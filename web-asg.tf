@@ -57,7 +57,7 @@ resource "aws_launch_configuration" "web" {
 resource "aws_autoscaling_group" "web" {
   launch_configuration = aws_launch_configuration.web.id
 
-  vpc_zone_identifier = [module.vpc.public_subnets]
+  vpc_zone_identifier = module.vpc.public_subnets
 
   load_balancers    = [module.elb_web.this_elb_name]
   health_check_type = "EC2"
