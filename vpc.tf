@@ -21,22 +21,22 @@ module "vpc" {
 # Borrowed from VPC Module from Terraform Module Repository:
 variable "vpc_cidr" {
   description = "The CIDR block for the VPC. Default value is a valid CIDR, but not acceptable by AWS and should be overriden"
-  default     = "10.0.0.0/16"
+  default     = ["10.0.0.0/16"]
 }
 
 variable "vpc_public_subnets" {
   description = "A list of public subnets inside the VPC"
-  default     = ["10.0.1.0/24", "10.0.2.0/24"]
+  default     = [["10.0.1.0/24", "10.0.2.0/24"]]
 }
 
 variable "vpc_private_subnets" {
   description = "A list of private subnets inside the VPC"
-  default     = ["10.0.11.0/24", "10.0.12.0/24"]
+  default     = [["10.0.11.0/24", "10.0.12.0/24"]]
 }
 
 variable "vpc_database_subnets" {
   description = "A list of database subnets"
-  default     = ["10.0.21.0/24", "10.0.22.0/24"]
+  default     = [["10.0.21.0/24", "10.0.22.0/24"]]
 }
 
 variable "vpc_azs" {
