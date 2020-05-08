@@ -15,7 +15,7 @@ resource "aws_security_group" "app" {
     from_port   = "22"
     to_port     = "22"
     protocol    = "tcp"
-    cidr_blocks = [module.vpc.public_subnets]
+    cidr_blocks = module.vpc.public_subnets
   }
 
   egress {
@@ -60,7 +60,7 @@ data "template_file" "app" {
 resource "aws_autoscaling_group" "app" {
   launch_configuration = aws_launch_configuration.app.id
 
-  vpc_zone_identifier = [module.vpc.private_subnets]
+  vpc_zone_identifier = module.vpc.private_subnets
 
   load_balancers    = [module.elb_app.this_elb_name]
   health_check_type = "EC2"
