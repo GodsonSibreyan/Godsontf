@@ -6,10 +6,12 @@ module "vpc" {
   cidr = var.vpc_cidr
 
   #public_subnets = var.vpc_public_subnets
+  #private_subnets = var.vpc_private_subnets
+  #database_subnets = var.vpc_database_subnets
   public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnets = var.vpc_private_subnets
-  database_subnets = var.vpc_database_subnets
-
+  private_subnets = ["10.0.11.0/24", "10.0.12.0/24"]
+  database_subnets = ["10.0.21.0/24", "10.0.22.0/24"]
+    
   enable_nat_gateway = var.vpc_enable_nat_gateway
   single_nat_gateway = var.vpc_single_nat_gateway
   one_nat_gateway_per_az = var.vpc_one_nat_gateway_per_az
@@ -30,15 +32,15 @@ variable "vpc_cidr" {
 #  default     = [10.0.1.0/24, 10.0.2.0/24]
 #}
 
-variable "vpc_private_subnets" {
-  description = "A list of private subnets inside the VPC"
-  default     = [10.0.11.0/24, 10.0.12.0/24]
-}
+#variable "vpc_private_subnets" {
+#  description = "A list of private subnets inside the VPC"
+#  default     = [10.0.11.0/24, 10.0.12.0/24]
+#}
 
-variable "vpc_database_subnets" {
-  description = "A list of database subnets"
-  default     = [10.0.21.0/24, 10.0.22.0/24]
-}
+#variable "vpc_database_subnets" {
+#  description = "A list of database subnets"
+#  default     = [10.0.21.0/24, 10.0.22.0/24]
+#}
 
 variable "vpc_azs" {
   description = "A list of availability zones in the region"
