@@ -7,8 +7,8 @@ resource "aws_security_group" "app" {
     from_port   = var.app_port
     to_port     = var.app_port
     protocol    = "tcp"
-    #cidr_blocks = [module.vpc.public_subnets_cidr_blocks, module.vpc.private_subnets_cidr_blocks]
-    cidr_blocks = [module.vpc.public_subnets, module.vpc.private_subnets]
+    cidr_blocks = [module.vpc.public_subnets_cidr_blocks, module.vpc.private_subnets_cidr_blocks]
+    #cidr_blocks = [module.vpc.public_subnets, module.vpc.private_subnets]
   }
 
   ingress {
