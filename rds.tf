@@ -40,6 +40,7 @@ module "rds" {
   backup_retention_period = var.db_backup_retention_period
   create_db_parameter_group = false
   create_db_option_group = false
+  option_group_name = "threetierDjango"
   parameter_group_name = "default.mysql5.7"
   subnet_ids = module.vpc.database_subnets
 
