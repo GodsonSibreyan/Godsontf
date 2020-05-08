@@ -1,5 +1,5 @@
 resource "aws_security_group" "elb_app" {
-  name = format("%s-elb-app-sg", var.name)
+  name = format("%selbappsg", var.name)
 
   vpc_id = module.vpc.vpc_id
 
@@ -26,7 +26,7 @@ resource "aws_security_group" "elb_app" {
 module "elb_app" {
   source = "terraform-aws-modules/elb/aws"
 
-  name = format("%s-elb-app", var.name)
+  name = format("%selbapp", var.name)
 
   subnets         = module.vpc.private_subnets
   security_groups = [aws_security_group.elb_app.id]
