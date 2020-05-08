@@ -21,7 +21,7 @@ module "vpc" {
 # Borrowed from VPC Module from Terraform Module Repository:
 variable "vpc_cidr" {
   description = "The CIDR block for the VPC. Default value is a valid CIDR, but not acceptable by AWS and should be overriden"
-  default     = ["10.0.0.0/16"]
+  default     = "10.0.0.0/16"
 }
 
 variable "vpc_public_subnets" {
