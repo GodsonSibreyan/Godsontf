@@ -1,5 +1,5 @@
 resource "aws_security_group" "rds" {
-  name = format("%s-rds-sg", var.name)
+  name = format("%srdssg", var.name)
 
   vpc_id = module.vpc.vpc_id
 
