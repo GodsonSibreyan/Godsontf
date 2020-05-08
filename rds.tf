@@ -16,39 +16,70 @@ resource "aws_security_group" "rds" {
 
 }
 
-module "rds" {
-  source = "terraform-aws-modules/rds/aws"
+#module "rds" {
+#  source = "terraform-aws-modules/rds/aws"
 
-  identifier = var.db_identifier
+#  identifier = var.db_identifier
 
-  engine            = "mysql"
-  engine_version    = "5.7"
-  instance_class    = "db.t2.micro"
-  allocated_storage = var.db_allocated_storage
+#  engine            = "mysql"
+#  engine_version    = "5.7"
+ # instance_class    = "db.t2.micro"
+  #allocated_storage = var.db_allocated_storage
 
-  name = var.db_name
-  username = var.db_username
-  password = var.db_password
-  port     = var.db_port
+  #name = var.db_name
+  #username = var.db_username
+  #password = var.db_password
+  #port     = var.db_port
 
-  vpc_security_group_ids = [aws_security_group.rds.id]
+ # vpc_security_group_ids = [aws_security_group.rds.id]
 
-  maintenance_window = var.db_maintenance_window
-  backup_window      = var.db_backup_window
+ # maintenance_window = var.db_maintenance_window
+ # backup_window      = var.db_backup_window
 
   # disable backups to create DB faster
-  backup_retention_period = var.db_backup_retention_period
-  create_db_parameter_group = false
-  create_db_option_group = false
-  parameter_group_name = "default.mysql5.7"
-  subnet_ids = module.vpc.database_subnets
+  #backup_retention_period = var.db_backup_retention_period
+  #create_db_parameter_group = false
+  #create_db_option_group = false
+  #parameter_group_name = "default.mysql5.7"
+  #subnet_ids = module.vpc.database_subnets
 
+  #tags = {
+  #  Group = var.name
+ # }
+
+#}
+resource "aws_db_instance" "tfrds" {
+identifier = var.db_identifier
+allocated_storage = "10"
+storage_type = "gp2"
+engine = "mysql"
+engine_version = "5.7"
+instance_class = "db.t2.micro"
+name = "zippyops"
+username = "zippyops"
+password = "zippyops"
+availability_zone = "us-east-1a"
+backup_retention_period = "7"
+backup_window = "00:05-00:35"
+skip_final_snapshot = true
+
+subnet_ids = module.vpc.database_subnets
+vpc_security_group_ids = [aws_security_group.rds.id]
+#db_subnet_group_name = aws_db_subnet_group.tfdbsubnetgroup.id
+#vpc_security_group_ids = [aws_security_group.dbsg.id]
+
+  provisioner "local-exec" {
+    command = "echo ${aws_db_instance.tfrds.address} >> /var/lib/jenkins/workspace//endpoint"
+}
   tags = {
     Group = var.name
   }
-
 }
 
+output "rds_link" {
+  description = "The address of the RDS Instnce"
+  value = aws_db_instance.tfrds.address
+}
 variable "db_identifier" {
   description = "The name of the RDS instance"
   default = "django"
