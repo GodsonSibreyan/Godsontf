@@ -26,17 +26,17 @@ variable "vpc_cidr" {
 
 variable "vpc_public_subnets" {
   description = "A list of public subnets inside the VPC"
-  default     = ["aws_subnet.public_subnets-1.id","aws_subnet.public_subnets-2.id"]
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "vpc_private_subnets" {
   description = "A list of private subnets inside the VPC"
-  default     = ["aws_subnet.private_subnet-1.id","aws_subnet.private_subnet-2.id"]
+  default     = ["10.0.11.0/24", "10.0.12.0/24"]
 }
 
 variable "vpc_database_subnets" {
   description = "A list of database subnets"
-  default     = ["aws_subnet.database_subnet-1.id","aws_subnet.database_subnet-2.id"]
+  default     = ["10.0.21.0/24", "10.0.22.0/24"]
 }
 
 variable "vpc_azs" {
