@@ -26,17 +26,17 @@ variable "vpc_cidr" {
 
 variable "vpc_public_subnets" {
   description = "A list of public subnets inside the VPC"
-  default     = ["us-east-1a", "us-east-1b"]
+  default     = ["10.0.0.0/24","10.0.1.0/24"]
 }
 
 variable "vpc_private_subnets" {
   description = "A list of private subnets inside the VPC"
-  default     = ["us-east-1c","us-east-1d"]
+  default     = ["10.0.2.0/24","10.0.3.0/24"]
 }
 
 variable "vpc_database_subnets" {
   description = "A list of database subnets"
-  default     = ["us-east-1e","us-east-1f"]
+  default     = ["10.0.4.0/24","10.0.5.0/24"]
 }
 
 variable "vpc_azs" {
