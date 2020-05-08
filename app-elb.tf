@@ -41,7 +41,7 @@ module "elb_app" {
     },
   ]
   health_check = {
-      target              = "TCP:3306/"
+      target              = "TCP:3306"
       interval            = 20
       healthy_threshold   = 2
       unhealthy_threshold = 2
