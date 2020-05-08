@@ -26,7 +26,7 @@ variable "vpc_cidr" {
 
 variable "vpc_public_subnets" {
   description = "A list of public subnets inside the VPC"
-  default     = ["aws_subnet.public-subnet-1.id","aws_subnet.public-subnet-2.id"]
+  default     = ["aws_subnet.public_subnets-1.id","aws_subnet.public_subnets-2.id"]
 }
 
 variable "vpc_private_subnets" {
