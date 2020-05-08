@@ -27,6 +27,6 @@ variable "size" {
   default = "10"
 }
 variable "instance_type" {
-  default = "t2-micro"
+  default = "t2.micro"
 }
 
