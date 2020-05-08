@@ -52,7 +52,7 @@ module "rds" {
   deletion_protection = true
    options = [
     {
-      option_name = "MYSQLDB_AUDIT_PLUGIN"
+      option_name = "MARIADB_AUDIT_PLUGIN"
 
       option_settings = [
         {
