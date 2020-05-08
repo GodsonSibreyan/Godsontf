@@ -14,7 +14,7 @@ variable "region" {
 
 variable "name" {
   description = "The name of the deployment"
-  default = "django three-tier"
+  default = "djangothreetier"
 }
 
 variable "public_key" {
