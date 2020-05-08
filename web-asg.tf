@@ -1,5 +1,5 @@
 resource "aws_security_group" "web" {
-  name = format("%s-web-sg", var.name)
+  name = format("%swebsg", var.name)
 
   vpc_id = module.vpc.vpc_id
 
