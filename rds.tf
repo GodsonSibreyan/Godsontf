@@ -38,16 +38,38 @@ module "rds" {
 
   # disable backups to create DB faster
   backup_retention_period = var.db_backup_retention_period
-  create_db_parameter_group = false
-  create_db_option_group = false
-  option_group_name = "threetierDjango"
-  parameter_group_name = "default.mysql5.7"
   subnet_ids = module.vpc.database_subnets
+    # DB parameter group
+  family = "mysql5.7"
 
+  # DB option group
+  major_engine_version = "5.7"
+
+  # Snapshot name upon DB deletion
+  final_snapshot_identifier = var.db_identifier
+
+  # Database Deletion Protection
+  deletion_protection = true
+   options = [
+    {
+      option_name = "MYSQLDB_AUDIT_PLUGIN"
+
+      option_settings = [
+        {
+          name  = "SERVER_AUDIT_EVENTS"
+          value = "CONNECT"
+        },
+        {
+          name  = "SERVER_AUDIT_FILE_ROTATIONS"
+          value = "37"
+        },
+      ]
+    },
+  ]
   tags = {
     Group = var.name
   }
-
+ 
 }
 
 variable "db_identifier" {
