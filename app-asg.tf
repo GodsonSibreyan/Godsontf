@@ -1,5 +1,5 @@
 resource "aws_security_group" "app" {
-  name = format("%s-app-sg", var.name)
+  name = format("%sappsg", var.name)
 
   vpc_id = module.vpc.vpc_id
 
@@ -40,7 +40,7 @@ resource "aws_launch_configuration" "app" {
   security_groups = [aws_security_group.app.id]
   #TODO REMOVE
   key_name = var.public_key
-  name_prefix = "var.name-app-vm-"
+  name_prefix = "var.nameappvm"
 
   user_data = data.template_file.app.rendered
 
