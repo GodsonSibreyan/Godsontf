@@ -187,7 +187,7 @@ db_subnet_group_name = aws_db_subnet_group.DBSubnetgroup.id
 vpc_security_group_ids = [aws_security_group.DBSG.id]
 
   provisioner "local-exec" {
-    command = "echo ${aws_db_instance.RDS.address} >> /var/lib/jenkins/workspace/drupal/endpoint"
+    command = "echo ${aws_db_instance.RDS.address} >> /var/lib/jenkins/workspace/DjangoMultiChoice/endpoint"
 }
 }
 
