@@ -6,15 +6,23 @@ pipeline {
     }
 
     stages {
-        stage('Remove') {
+        stage('Terraform Destroy') {
             steps {
+                script {
+			      instance="${params.Terraform_Destroy}"
+                  if ("$instance" == "Yes"){
                 sh 'terraform destroy -auto-approve'
-                sh label: '', script: '''rm -rf /${WORKSPACE}/*'''
+                sh label: '', script: '''rm -rf ${WORKSPACE}/*'''
+                }
+                else{
+                    sh 'echo "Run on with same code!!!"'
+                }
+                }
             }
         }
         stage('terraform clone') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/DjangoWithDiff.Env']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '7e261af1-1211-4b5a-9478-675cac127cce', url: 'https://github.com/GodsonSibreyan/Godsontf.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/DjangoWithDiff.Env']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'fc4bb03e-e514-4d74-ab74-e8c85cc6568d', url: 'https://github.com/GodsonSibreyan/Godsontf.git']]])
             }
         }
         stage('Success Message'){
@@ -22,27 +30,27 @@ pipeline {
                script {
 			      instance="${params.Environment}"
 			          if ("$instance" == "SingleServer"){
-                            sh "rm -rf MultiServer_with_MySQL MultiServer_with_RDS MultiServer_with_ASG&ALB"
-                            sh "mv /${WORKSPACE}/SingleServer/* /${WORKSPACE}"
+                            sh "rm -rf MultiServer_with_MySQL MultiServer_with_RDS MultiServer_with_ASGALB"
+                            sh "mv ${WORKSPACE}/SingleServer/* ${WORKSPACE}"
                             sh 'echo "Everything is Perfect, Go Ahead for SingleServer!!!"'
                       }
 					  else if ("$instance" == "MultiServer_with_MySQL"){
-                            sh "rm -rf MultiServer_with_RDS MultiServer_with_ASG&ALB SingleServer"
-                            sh "mv /${WORKSPACE}/MultiServer_with_MySQL/* /${WORKSPACE}"
+                            sh "rm -rf MultiServer_with_RDS MultiServer_with_ASGALB SingleServer"
+                            sh "mv ${WORKSPACE}/MultiServer_with_MySQL/* ${WORKSPACE}"
 		                    sh 'echo "Everything is Perfect, Go Ahead for MultiServer_with_MySQL!!!"'
 		              }
                       else if ("$instance" == "MultiServer_with_RDS"){
-                            sh "rm -rf SingleServer MultiServer_with_MySQL MultiServer_with_ASG&ALB"
-                            sh "mv /${WORKSPACE}/MultiServer_with_RDS/* /${WORKSPACE}"
+                            sh "rm -rf SingleServer MultiServer_with_MySQL MultiServer_with_ASGALB"
+                            sh "mv ${WORKSPACE}/MultiServer_with_RDS/* ${WORKSPACE}"
 		                    sh 'echo "Everything is Perfect, Go Ahead for MultiServer_with_RDS!!!"'
 		              }
-                      else if ("$instance" == "MultiServer_with_ASG&ALB"){
+                      else if ("$instance" == "MultiServer_with_ASGALB"){
                             sh "rm -rf SingleServer MultiServer_with_MySQL MultiServer_with_RDS"
-                            sh "mv /${WORKSPACE}/MultiServer_with_ASG&ALB/* /${WORKSPACE}"
-		                    sh label: '', script: ''' sed -i \"s/2/$Autoscaling_Max_Value/g\" /${WORKSPACE}/variables.tf
-                            sed -i \"s/1/$Autoscaling_Min_Value/g\" /${WORKSPACE}/variables.tf
+                            sh "mv ${WORKSPACE}/MultiServer_with_ASGALB/* ${WORKSPACE}"
+		                    sh label: '', script: ''' sed -i \"s/2/$Autoscaling_Max_Value/g\" ${WORKSPACE}/variables.tf
+                            sed -i \"s/1/$Autoscaling_Min_Value/g\" ${WORKSPACE}/variables.tf
                             '''
-		                    sh 'echo "Everything is Perfect, Go Ahead for MultiServer_with_ASG&ALB!!!"'
+		                    sh 'echo "Everything is Perfect, Go Ahead for MultiServer_with_ASGALB!!!"'
 		              }
 		              else {
 		                  sh 'echo "Something went Wrong!!!"'
@@ -52,10 +60,10 @@ pipeline {
             }
         stage('Parameters'){
             steps {
-                sh label: '', script: ''' sed -i \"s/user/$Access_key/g\" /${WORKSPACE}/variables.tf
-                sed -i \"s/password/$Secret_key/g\" /${WORKSPACE}/variables.tf
-                sed -i \"s/t2.micro/$Instance_type/g\" /${WORKSPACE}/variables.tf
-                sed -i \"s/10/$Instance_size/g\" /${WORKSPACE}/variables.tf
+                sh label: '', script: ''' sed -i \"s/user/$Access_key/g\" ${WORKSPACE}/variables.tf
+                sed -i \"s/password/$Secret_key/g\" ${WORKSPACE}/variables.tf
+                sed -i \"s/t2.micro/$Instance_type/g\" ${WORKSPACE}/variables.tf
+                sed -i \"s/10/$Instance_size/g\" ${WORKSPACE}/variables.tf
                 '''
                 }
             }
@@ -73,12 +81,11 @@ pipeline {
          stage('terraform apply') {
             steps {
                 sh 'terraform apply -auto-approve'
-                sleep 1020
             }
         } 
         stage("git checkout") {
 	     steps {
-		    checkout([$class: 'GitSCM', branches: [[name: '*/branchPy']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'djangocodebase']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '7e261af1-1211-4b5a-9478-675cac127cce', url: 'https://github.com/GodsonSibreyan/Godsontf.git']]])
+		    checkout([$class: 'GitSCM', branches: [[name: '*/branchPy']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'djangocodebase']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'fc4bb03e-e514-4d74-ab74-e8c85cc6568d', url: 'https://github.com/GodsonSibreyan/Godsontf.git']]])
            }
         }
 		
@@ -95,7 +102,7 @@ pipeline {
         stage("Sonarqube Quality Gate") {
 	     steps {
 	      script { 
-            sleep(60)
+            sleep(30)
             qg = waitForQualityGate() 
 		    }
            }
@@ -107,8 +114,21 @@ pipeline {
 			dependencyCheckPublisher pattern: ''
         }
         archiveArtifacts allowEmptyArchive: true, artifacts: '**/dependency-check-report.xml', onlyIfSuccessful: true
-        }
+        sleep 900
+		    
+		}
         } 
+        stage('ClamAV') {
+	    parallel {
+	      stage('Scan') {
+	        steps {
+	         script {
+                build job: 'DjangoMultiChoice_Clamav', wait: false
+             } 
+	        }
+	      }
+	    }
+        }
         stage('Deployment'){
             steps {
                script {
@@ -181,7 +201,7 @@ pipeline {
                             '''
 		                    sh 'echo "Application Deployed, Go Ahead for VAPT,OWASP,LinkChecker,SpeedTest!!!"'
 		              }
-                      else if ("$instance" == "MultiServer_with_ASG&ALB"){
+                      else if ("$instance" == "MultiServer_with_ASGALB"){
 		                    sh 'echo "Application Deployed, Go Ahead for VAPT,OWASP,LinkChecker,SpeedTest!!!"'
 		              }
 		              else {
@@ -210,9 +230,9 @@ pipeline {
                    mkdir -p $WORKSPACE/out
                    chmod 777 $WORKSPACE/out
                    rm -f $WORKSPACE/out/*.*
-                   sudo docker run --rm --network=host -v ${WORKSPACE}/out:/zap/wrk/:rw -t docker.io/owasp/zap2docker-stable zap-baseline.py -t http://$pubIP:8000 -m 15 -d -r Django_Dev_ZAP_VULNERABILITY_REPORT_${BUILD_ID}.html -x Django_Dev_ZAP_VULNERABILITY_REPORT_${BUILD_ID}.xml || true
+                   sudo docker run --rm --network=host -v /var/lib/jenkins/workspace/DjangoMultiChoice/out:/zap/wrk/:rw -t owasp/zap2docker-live zap-baseline.py -t http://$pubIP:8000 -m 5 -d -r Django_Dev_ZAP_VULNERABILITY_REPORT_${BUILD_ID}.html -x Django_Dev_ZAP_VULNERABILITY_REPORT_${BUILD_ID}.xml || true
                    '''
-                   archiveArtifacts artifacts: 'out/**/*'
+                   archiveArtifacts artifacts: 'out/*.html'
 		    }
         } 
         stage('linkChecker'){
@@ -263,6 +283,9 @@ pipeline {
               reportFiles: 'Django_Dev_ZAP_VULNERABILITY_REPORT_${BUILD_ID}.html',
               reportName: 'Dev_owasp'
               ]
+         sh label: '', script: '''pubIP=$(<publicip)
+                   echo "http://$pubIP:8000" '''
         }
     }
 }
+
